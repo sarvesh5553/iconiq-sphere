@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import "../styles/ArticlesSection.css";  // ← Add this import
 
 const ARTICLES = [
   {
@@ -185,19 +186,6 @@ export default function ArticlesSection() {
           </div>
         </div>
       </div>
-
-      {/* ================= MOBILE SCROLLBAR HIDE ================= */}
-
-      <style jsx global>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   );
 }

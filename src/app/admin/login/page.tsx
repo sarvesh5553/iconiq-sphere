@@ -160,7 +160,7 @@ export default function AdminLoginPage() {
           <div className="relative z-10 flex items-center">
 
             <Image
-              src="/iconiq-sphere-logo.svg"
+              src="/iconiq-sphere-logo-admin.svg"
               alt="Iconiq Sphere"
               width={210}
               height={60}

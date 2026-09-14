@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import "../styles/cover-stories.css";  // ← Add this import
 
 const coverStories = [
   {
@@ -218,19 +219,6 @@ export default function CoverStoriesSection() {
         </div>
 
       </div>
-
-      <style jsx global>{`
-        .cover-stories-section,
-        .cover-stories-section * {
-          box-sizing: border-box;
-        }
-
-        .cover-stories-section {
-          width: 100%;
-          background: #ffffff;
-          color: #082e63;
-        }
-      `}</style>
     </section>
   );
 }

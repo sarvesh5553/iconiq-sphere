@@ -168,7 +168,7 @@ export default function HallOfFameSection() {
               </span>
 
               <strong>
-                Shaping Tomorrow's Business
+                Shaping Tomorrow&apos;s Business
               </strong>
             </div>
 
@@ -216,7 +216,7 @@ export default function HallOfFameSection() {
               </span>
 
               <strong>
-                Redefining What's Possible
+                Redefining What&apos;s Possible
               </strong>
             </div>
 

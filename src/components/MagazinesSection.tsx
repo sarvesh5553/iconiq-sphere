@@ -1,8 +1,10 @@
+
 "use client";
 
 import Link from "next/link";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { useState } from "react";
+import "../styles/magazines.css";
 
 const LATEST_MAGAZINES = [
   {
@@ -34,11 +36,9 @@ export default function MagazinesSection() {
       className="w-full border-b border-slate-100 bg-white scroll-mt-24"
     >
       <div className="mx-auto w-full max-w-[1360px] px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14">
-
-        {/* ================= HEADER ================= */}
+        {/* HEADER */}
 
         <div className="mb-7 flex items-end justify-between gap-4 border-b border-slate-200 pb-5 sm:mb-8 sm:pb-6">
-
           {/* LEFT SIDE */}
 
           <div className="min-w-0">
@@ -57,9 +57,7 @@ export default function MagazinesSection() {
             href="/magazines"
             className="group flex shrink-0 items-center gap-2 border-b-2 border-[#285a9c] pb-1 text-[8px] font-black uppercase tracking-[0.08em] text-[#174a84] transition-all duration-200 hover:gap-3 sm:text-[10px]"
           >
-            <span className="whitespace-nowrap">
-              EXPLORE ALL MAGAZINES
-            </span>
+            <span className="whitespace-nowrap">EXPLORE ALL MAGAZINES</span>
 
             <ArrowUpRight
               size={14}
@@ -69,10 +67,10 @@ export default function MagazinesSection() {
           </Link>
         </div>
 
-        {/* ================= MAGAZINES ================= */}
+        {/* MAGAZINES */}
 
         <div className="overflow-x-auto overflow-y-hidden scrollbar-hide lg:overflow-visible">
-          <div className="flex gap-2.5 sm:grid sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-5">
+          <div className="flex gap-2.5 sm:grid sm:grid-cols-2 sm:gap-5 lg:grid lg:grid-cols-4 lg:gap-5">
             {LATEST_MAGAZINES.map((magazine) => (
               <MagazineCard
                 key={magazine.id}
@@ -84,19 +82,6 @@ export default function MagazinesSection() {
           </div>
         </div>
       </div>
-
-      {/* ================= MOBILE SCROLLBAR HIDE ================= */}
-
-      <style jsx global>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   );
 }
@@ -121,28 +106,9 @@ function MagazineCard({
   return (
     <Link
       href={`/magazines/${id}`}
-      className="
-        group
-        relative
-        block
-        aspect-[3/4]
-        w-[calc((100vw-43px)/3)]
-        min-w-[calc((100vw-43px)/3)]
-        overflow-hidden
-        rounded-[4px]
-        border
-        border-slate-200
-        bg-slate-100
-        shadow-sm
-        transition-all
-        duration-500
-        hover:-translate-y-1
-        hover:shadow-xl
-        sm:w-auto
-        sm:min-w-0
-      "
+      className="group relative block aspect-[3/4] w-[calc((100vw-43px)/3)] min-w-[calc((100vw-43px)/3)] overflow-hidden rounded-[4px] border border-slate-200 bg-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl sm:w-auto sm:min-w-0"
     >
-      {/* ================= IMAGE ================= */}
+      {/* IMAGE */}
 
       {!imageError ? (
         <img
@@ -152,7 +118,7 @@ function MagazineCard({
           onError={() => setImageError(true)}
         />
       ) : (
-        /* ================= FALLBACK ================= */
+        /* FALLBACK */
 
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#0b3470] text-white">
           <BookOpen
@@ -167,11 +133,10 @@ function MagazineCard({
         </div>
       )}
 
-      {/* ================= DARK HOVER OVERLAY ================= */}
+      {/* DARK HOVER OVERLAY */}
 
       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-[#071f43]/95 via-[#071f43]/40 to-transparent p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:p-5 lg:p-5">
         <div className="w-full translate-y-3 transition-transform duration-500 group-hover:translate-y-0">
-
           <div className="mb-3 flex items-center gap-2">
             <BookOpen
               size={15}
@@ -199,7 +164,7 @@ function MagazineCard({
         </div>
       </div>
 
-      {/* ================= SMALL NUMBER ================= */}
+      {/* SMALL NUMBER */}
 
       <span className="absolute left-3 top-3 z-10 text-[9px] font-bold tracking-[0.15em] text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:left-4 sm:top-4 sm:text-[11px]">
         {String(
@@ -211,3 +176,4 @@ function MagazineCard({
     </Link>
   );
 }
+

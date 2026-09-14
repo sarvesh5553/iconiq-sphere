@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -14,11 +15,28 @@ import {
   Users,
   Settings,
   LogOut,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+
+  // Track which content section's dropdown is open (e.g., "articles", "magazines", etc.)
+  // Automatically open the dropdown if the current path matches one of its sub-routes
+  const [openDropdown, setOpenDropdown] = useState<string | null>(() => {
+    if (pathname.includes("/admin/articles")) return "articles";
+    if (pathname.includes("/admin/cover-stories")) return "cover-stories";
+    if (pathname.includes("/admin/magazines")) return "magazines";
+    if (pathname.includes("/admin/awards")) return "awards";
+    if (pathname.includes("/admin/podcasts")) return "podcasts";
+    return null;
+  });
+
+  const toggleDropdown = (section: string) => {
+    setOpenDropdown(openDropdown === section ? null : section);
+  };
 
   const handleSignOut = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -32,11 +50,10 @@ export default function AdminSidebar() {
       <div className="sidebar-logo-area">
         <div className="sidebar-logo-box">
           <img
-            src="/iconiq-sphere-logo.svg"
+            src="/iconiq-sphere-logo-admin.svg"
             alt="Iconiq Logo"
             className="sidebar-logo"
             onError={(e) => {
-              // Fallback text rendering if image asset isn't found
               e.currentTarget.style.display = "none";
             }}
           />
@@ -53,35 +70,51 @@ export default function AdminSidebar() {
             icon={FileText}
             currentPath={pathname}
           />
-          <SidebarItem
-            href="/admin/articles/view"
+
+          {/* CONTENT SECTIONS WITH VIEW & ADD DROPDOWNS */}
+          <SidebarDropdown
+            sectionKey="articles"
             label="Articles"
             icon={FileText}
             currentPath={pathname}
+            isOpen={openDropdown === "articles"}
+            onToggle={() => toggleDropdown("articles")}
           />
-          <SidebarItem
-            href="/admin/cover-stories/view"
+
+          <SidebarDropdown
+            sectionKey="cover-stories"
             label="Cover Stories"
             icon={BookOpen}
             currentPath={pathname}
+            isOpen={openDropdown === "cover-stories"}
+            onToggle={() => toggleDropdown("cover-stories")}
           />
-          <SidebarItem
-            href="/admin/magazines/view"
+
+          <SidebarDropdown
+            sectionKey="magazines"
             label="Magazines"
             icon={Library}
             currentPath={pathname}
+            isOpen={openDropdown === "magazines"}
+            onToggle={() => toggleDropdown("magazines")}
           />
-          <SidebarItem
-            href="/admin/awards/view"
+
+          <SidebarDropdown
+            sectionKey="awards"
             label="Awards"
             icon={Award}
             currentPath={pathname}
+            isOpen={openDropdown === "awards"}
+            onToggle={() => toggleDropdown("awards")}
           />
-          <SidebarItem
-            href="/admin/podcasts/view"
+
+          <SidebarDropdown
+            sectionKey="podcasts"
             label="Podcasts"
             icon={Mic2}
             currentPath={pathname}
+            isOpen={openDropdown === "podcasts"}
+            onToggle={() => toggleDropdown("podcasts")}
           />
         </nav>
 
@@ -139,6 +172,7 @@ export default function AdminSidebar() {
   );
 }
 
+// Standard Single Link Item
 function SidebarItem({
   href,
   label,
@@ -163,5 +197,91 @@ function SidebarItem({
       </span>
       <span>{label}</span>
     </Link>
+  );
+}
+
+// Collapsible Dropdown Component for Sections with View/Add
+function SidebarDropdown({
+  sectionKey,
+  label,
+  icon: Icon,
+  currentPath,
+  isOpen,
+  onToggle,
+}: {
+  sectionKey: string;
+  label: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  currentPath: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const isViewActive = currentPath === `/admin/${sectionKey}/view`;
+  const isAddActive = currentPath === `/admin/${sectionKey}/add`;
+  const isAnyChildActive = isViewActive || isAddActive;
+
+  return (
+    <div className="sidebar-dropdown-group">
+      {/* Main Dropdown Toggle Button */}
+      <button
+        type="button"
+        onClick={onToggle}
+        className={`sidebar-link ${isAnyChildActive ? "sidebar-link-active" : ""}`}
+        style={{
+          width: "100%",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          textAlign: "left",
+        }}
+      >
+        {isAnyChildActive && <div className="active-indicator" />}
+        <span className="sidebar-icon">
+          <Icon size={16} />
+        </span>
+        <span style={{ flex: 1 }}>{label}</span>
+        <span style={{ opacity: 0.6, display: "flex", alignItems: "center" }}>
+          {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        </span>
+      </button>
+
+      {/* Sub-menu items (View and Add) */}
+      {isOpen && (
+        <div className="sidebar-submenu">
+          <Link
+            href={`/admin/${sectionKey}/view`}
+            className={`sidebar-sublink ${isViewActive ? "sidebar-sublink-active" : ""}`}
+            style={{
+              display: "block",
+              padding: "6px 10px 6px 36px",
+              fontSize: "12px",
+              textDecoration: "none",
+              color: isViewActive ? "inherit" : "inherit",
+              opacity: isViewActive ? 1 : 0.75,
+              fontWeight: isViewActive ? 700 : 500,
+            }}
+          >
+            View {label}
+          </Link>
+          <Link
+            href={`/admin/${sectionKey}/add`}
+            className={`sidebar-sublink ${isAddActive ? "sidebar-sublink-active" : ""}`}
+            style={{
+              display: "block",
+              padding: "6px 10px 6px 36px",
+              fontSize: "12px",
+              textDecoration: "none",
+              color: isAddActive ? "inherit" : "inherit",
+              opacity: isAddActive ? 1 : 0.75,
+              fontWeight: isAddActive ? 700 : 500,
+            }}
+          >
+            Add {label}
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }
